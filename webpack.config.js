@@ -17,13 +17,17 @@ const config = {
   devServer: {
     open: true,
     host: "localhost",
+    hot: true,
+    watchFiles: ['src/**/*.ts','src/**/*.tsx', 'index.html'],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "index.html",
     }),
 
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "./output.css",
+    }),
 
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
