@@ -6,7 +6,8 @@
     "lib": ["es2017", "dom"],
     "moduleResolution": "node",
     "target": "es5",
-    "allowJs": true
+    "allowJs": true,
+    "jsx": "react-jsx"
   },
-  "files": ["src/index.ts"]
+  "files": ["src/index.tsx"]
 }
