@@ -1,3 +1,4 @@
 node_modules
 lib/GoogleAPI
 src/lib/GoogleAPI/client_secret_231361054392-dpdgklid0c74b0h4itsev5ddiej13fub.apps.googleusercontent.com.json
+ServerModules/Credentials

@@ -1,5 +1,6 @@
+/**Node package */
 import express from 'express';
-
+/**Google API */
 import { PeopleAPI } from './GoogleAPI/PeopleAPI';
 
 const app:express.Express = express();

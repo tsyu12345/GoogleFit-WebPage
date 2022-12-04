@@ -2,7 +2,7 @@
 const { google } = require('googleapis');
 /** */
 const { GoogleAuth } = require('./Auth');
-const GoogleAPI = require('./APIToken.json');
+const GoogleAPI = require('../Credentials/apiToken.json');
 
 /**
     Google People APIを呼び出し、利用するクラス
