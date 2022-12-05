@@ -7,7 +7,7 @@ import { OAuth2Client } from 'google-auth-library';
 /**
  * APIトークンの返却値
  */
-interface ApiToken {
+export interface ApiToken {
     access_token: string;
     refresh_token: string;
     scope: string;
@@ -20,25 +20,27 @@ interface ApiToken {
  */
 export class Auth {
 
-    private readonly  Oauth2: OAuth2Client = new google.auth.OAuth2(
+    public readonly  Oauth2: OAuth2Client = new google.auth.OAuth2(
         web.client_id,
         web.client_secret,
         web.redirect_uris[0]
     );
     
-    /*
-    private readonly scope : string[] = [
-        'https://www.googleapis.com/auth/contacts',
-        'https://www.googleapis.com/auth/userinfo.profile'
-    ];
-    */
     private readonly scope : string[];
 
     private readonly accessType: string = 'offline';
 
     constructor(scopes: string[]) {
-        this.scope = scopes;
+        this.scope = [...scopes];
     }
+
+    /**
+     * Oauth2Clientにセットする
+     */
+    public setCredentials(tokens: ApiToken): void {
+        this.Oauth2.setCredentials(tokens);
+    }
+
 
     /**
      * APIを利用するためのトークンを取得する
@@ -46,7 +48,7 @@ export class Auth {
      */
     public getToken(): Promise<ApiToken>{
 
-        const authUrl = this.Oauth2.generateAuthUrl({
+        const authUrl: string = this.Oauth2.generateAuthUrl({
             access_type: this.accessType,
             scope: this.scope
         });
@@ -80,16 +82,23 @@ export class Auth {
         });
     }
 
+
     /**
      * 承認情報をJSONで出力し保存する
      * @param savePath 保存先のパス
      */
-    public async saveForJson(savePath: string): Promise<void> {
-        const token: {} = await this.getToken();
+    public async saveForJson(savePath: string, token:ApiToken): Promise<void> {
         fs.writeFile(savePath, JSON.stringify(token), (err) => {
             if (err) throw err;
             console.log('The file has been saved! see:', savePath);
         });
     }
+}
+
+if (typeof require !== 'undefined' && require.main === module) {
+    const auth = new Auth(["https://www.googleapis.com/auth/fitness.activity.read"]);
+    auth.getToken().then((token) => {
+        auth.saveForJson('../Credentials/apiToken-fit.json', token);
+    });
 }
 

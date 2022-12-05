@@ -1,7 +1,8 @@
 /**Node package */
 import express from 'express';
 /**Google API */
-import { PeopleAPI } from './GoogleAPI/PeopleAPI';
+import { PeopleAPI } from './GoogleAPI/People';
+import { FitAPI } from './GoogleAPI/Fit';
 
 const app:express.Express = express();
 const port:number = 8000;
@@ -12,14 +13,16 @@ app.get('/', (req, res) => {
 
 /**PeopleAPI用 */
 app.get("/api/People", async(req, res) => {
-    /**request for API */
-    const peopleAPI = new PeopleAPI();
-    const userPhotoUrl = await peopleAPI.getPhotoURL();
-    /**create body */
-    const body: {} = {
-        "url": userPhotoUrl
-    }
-    res.send(body);
+    const people = new PeopleAPI();
+    const profile = await people.getPlofile();
+    res.send(profile);
+});
+
+/**Fit API用 */
+app.get("/api/Fit", (req, res) => {
+    res.send('Hello Fit!');
+    const fit = new FitAPI();
+    fit.getUserData();
 });
 
 app.listen(port, () => {

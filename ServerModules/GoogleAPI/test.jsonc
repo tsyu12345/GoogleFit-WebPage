@@ -1,0 +1,36 @@
+/**People API*/
+{
+    "resourceName": "people/103215502874590360325",
+    "etag": "%EggBAgMJLjc9PhoEAQIFByIMQUc0TmJtNkdYUVU9",
+    "names": [
+        {
+            "metadata": {
+                "primary": true,
+                "source": {
+                    "type": "PROFILE",
+                    "id": "103215502874590360325"
+                },
+                "sourcePrimary": true
+            },
+            "displayName": "Takabasi Syu",
+            "familyName": "Syu",
+            "givenName": "Takabasi",
+            "displayNameLastFirst": "Syu, Takabasi",
+            "unstructuredName": "Takabasi Syu"
+        }
+    ],
+    "photos": [
+        {
+            "metadata": {
+                "primary": true,
+                "source": {
+                    "type": "PROFILE",
+                    "id": "103215502874590360325"
+                }
+            },
+            "url": "https://lh3.googleusercontent.com/a/ALm5wu0lN4SbpPo8pVWIdHCziWBCv4GRpbjFTpqQ-v1a4sk=s100"
+        }
+    ]
+}
+
+/**Fit API*/
