@@ -4,6 +4,7 @@ import token from "../Credentials/apiToken.json";
 
 /**
  * Google Fit APIを呼び出し、各種機能を利用するクラス
+//FIXME: 403エラーが発生する
  */
 export class FitAPI extends GoogleAPI {
 
