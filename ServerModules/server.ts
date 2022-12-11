@@ -1,30 +1,72 @@
 /**Node package */
 import express from 'express';
 /**Google API */
-import { PeopleAPI } from './GoogleAPI/People';
-import { FitAPI } from './GoogleAPI/Fit';
+import PeopleAPI from './GoogleAPI/People';
+import FitAPI from './GoogleAPI/Fit';
 
-const app:express.Express = express();
-const port:number = 8000;
+class Server {
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+    private app: express.Express;
+    private port: number;
 
-/**PeopleAPI用 */
-app.get("/api/People", async(req, res) => {
-    const people = new PeopleAPI();
-    const profile = await people.getPlofile();
-    res.send(profile);
-});
+    constructor() {
+        this.app = express();
+        this.port = 8000;
+    }
 
-/**Fit API用 */
-app.get("/api/Fit", (req, res) => {
-    res.send('Hello Fit!');
-    const fit = new FitAPI();
-    fit.getUserData();
-});
+    public run(): void {
+        this.app.listen(this.port, () => {
+            console.log(`Server running on port ${this.port}`);
+        });
+    }
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+    /**
+     * サーバーのレスポンスを設定する
+     * @param url
+     * @param callback  
+     */
+    public setResponse(url: string, callback: (req: express.Request, res: express.Response) => void): void{
+        this.app.get(url, callback);
+    }
+
+}
+
+
+function runServer(): void {
+    const server = new Server();
+    server.setResponse("/", (req, res) => {
+        res.send("Hello World!");
+    });
+    peopleAPI(server);
+    fitAPI(server);
+}
+
+/**
+ * Google People APIを呼び出しラッパ
+ * @param server 
+ */
+function peopleAPI(server:Server) {
+
+    server.setResponse("/api/People", async (req, res) => {
+        const people = new PeopleAPI();
+        await people.init();
+        res.send(await people.getPlofile());
+    });
+}
+
+/**
+ * Google Fit APIを呼び出しラッパ
+ * @param server 
+ */
+function fitAPI(server:Server) {
+    server.setResponse("/api/Fit", async (req, res) => {
+        const fit = new FitAPI();
+        await fit.init();
+        const data = await fit.getUserData();
+        res.send(data);
+    });
+}
+
+runServer();
+
+

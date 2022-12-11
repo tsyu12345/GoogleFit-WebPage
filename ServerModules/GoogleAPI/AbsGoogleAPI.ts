@@ -1,18 +1,17 @@
-import { Auth, ApiToken } from './Auth';
+import Auth from "./ServiceAccountAuth";
 /**
  * Googleの各種APIを利用するクラスを作成するさいの基底クラス
  */
 export abstract class GoogleAPI {
-    protected readonly auth: Auth;
-    protected readonly scope : string[];
-    protected readonly token: ApiToken;
 
-    constructor(scope: string[], token: ApiToken) {
-        this.scope = [...scope];
-        this.token = token;
-        this.auth = new Auth(this.scope);
-        this.auth.setCredentials(this.token);
+    protected abstract scopes: string[];
+
+    protected abstract init(): Promise<void>;
+
+    protected async getClient() {
+        const auth = new Auth(this.scopes);
+        await auth.init();
+        return auth.client;
     }
 
-    
 }

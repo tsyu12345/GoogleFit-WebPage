@@ -5,22 +5,23 @@ import token from "../Credentials/apiToken.json";
 /**
     Google People APIを呼び出し、利用するクラス
 */
-export class PeopleAPI extends GoogleAPI {
+class PeopleAPI extends GoogleAPI {
     
     private people: people_v1.People;
 
-    constructor() {
-        const scope: string[] = [
-            'https://www.googleapis.com/auth/contacts',
-            'https://www.googleapis.com/auth/userinfo.profile'
-        ];
-        super(scope, token.people);
-        this.people = google.people({ version: 'v1', auth: this.auth.Oauth2 });
+    protected scopes: string[] = [
+        'https://www.googleapis.com/auth/contacts',
+        'https://www.googleapis.com/auth/userinfo.profile'
+    ]
 
+    constructor() {
+        super();
+        this.people = null as unknown as people_v1.People;
     }
 
-    protected initAPI(): void {
-        this.people = google.people({ version: 'v1', auth: this.auth.Oauth2 });
+    public async init(): Promise<void> {
+        const client = await this.getClient();
+        this.people = google.people({ version: 'v1', auth: client });
     }
 
     /**
@@ -35,3 +36,5 @@ export class PeopleAPI extends GoogleAPI {
         return response.data;
     }
 }
+
+export default PeopleAPI;
